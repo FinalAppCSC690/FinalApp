@@ -1,7 +1,5 @@
 # FinalApp
 
-App Name: Picture Generator 
-
 Do you ever get bored or have a few minutes to spare and want to look at 
 random pictures that people post publickly? The App, Picture generator 
 will do just that. 
