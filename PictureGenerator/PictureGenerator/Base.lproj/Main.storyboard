@@ -18,24 +18,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="darkBlueBG" translatesAutoresizingMaskIntoConstraints="NO" id="QIj-Jj-hZp">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="darkBlueBG" translatesAutoresizingMaskIntoConstraints="NO" id="hZG-ML-oJ6">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ofz-dr-y7J">
-                                <rect key="frame" x="135" y="279" width="105" height="96"/>
-                                <state key="normal" image="powerButton"/>
-                                <connections>
-                                    <action selector="powerBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qUY-aj-Pbi"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to Picture Generator!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1wi-s5-JsM">
-                                <rect key="frame" x="35" y="168" width="304" height="48"/>
-                                <color key="backgroundColor" red="0.57919406890000003" green="0.1280144453" blue="0.57268613580000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" name="Symbol" family="Symbol" pointSize="19"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to Picture Generator!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AFZ-Fe-pLU">
+                                <rect key="frame" x="16" y="226" width="343" height="33"/>
+                                <fontDescription key="fontDescription" name="ChalkboardSE-Bold" family="Chalkboard SE" pointSize="23"/>
+                                <color key="textColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3EV-57-T6u">
+                            <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Ue-sx-qXg">
+                                <rect key="frame" x="154" y="272" width="67" height="96"/>
+                                <state key="normal" image="powerButton">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="titleShadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="powerBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cqI-yd-qoD"/>
+                                </connections>
+                            </button>
+                            <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6PD-Ge-QLi">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -43,31 +45,30 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="1wi-s5-JsM" secondAttribute="trailing" constant="36" id="4va-VG-CYj"/>
-                            <constraint firstItem="Ofz-dr-y7J" firstAttribute="top" secondItem="1wi-s5-JsM" secondAttribute="bottom" constant="63" id="5Gk-SL-qXG"/>
-                            <constraint firstItem="Ofz-dr-y7J" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="135" id="Ew3-IO-OM4"/>
-                            <constraint firstItem="1wi-s5-JsM" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="35" id="JEd-B5-zsy"/>
-                            <constraint firstItem="1wi-s5-JsM" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="148" id="NEG-Ix-0bF"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Ofz-dr-y7J" secondAttribute="trailing" constant="135" id="PRr-2i-Rtg"/>
-                            <constraint firstItem="QIj-Jj-hZp" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="QFj-JE-eyr"/>
-                            <constraint firstItem="QIj-Jj-hZp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="h8a-9S-z4n"/>
-                            <constraint firstItem="Ofz-dr-y7J" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="259" id="jyN-Dk-5Ff"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Ofz-dr-y7J" secondAttribute="bottom" constant="292" id="nbu-dF-lVt"/>
-                            <constraint firstItem="QIj-Jj-hZp" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="pMZ-oc-BBU"/>
-                            <constraint firstItem="QIj-Jj-hZp" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="w0B-e0-AeM"/>
+                            <constraint firstItem="hZG-ML-oJ6" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="2ht-st-v7q"/>
+                            <constraint firstItem="AFZ-Fe-pLU" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="206" id="9Yr-vS-oht"/>
+                            <constraint firstItem="4Ue-sx-qXg" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="154" id="OOW-wo-YzF"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="AFZ-Fe-pLU" secondAttribute="trailing" constant="16" id="QJr-oh-pnn"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="4Ue-sx-qXg" secondAttribute="trailing" constant="154" id="Z29-DP-brF"/>
+                            <constraint firstItem="4Ue-sx-qXg" firstAttribute="top" secondItem="AFZ-Fe-pLU" secondAttribute="bottom" constant="13" id="dHU-VZ-lm0"/>
+                            <constraint firstItem="hZG-ML-oJ6" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="fRW-UB-nOW"/>
+                            <constraint firstItem="hZG-ML-oJ6" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="in9-Hr-JyT"/>
+                            <constraint firstItem="hZG-ML-oJ6" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="lgd-UV-NAX"/>
+                            <constraint firstItem="AFZ-Fe-pLU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="raR-8K-Wa2"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="4Ue-sx-qXg" secondAttribute="bottom" constant="299" id="zTT-mX-v2b"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="darkBlueBG" destination="QIj-Jj-hZp" id="mrj-8P-kXO"/>
-                        <outlet property="mapview" destination="3EV-57-T6u" id="pkt-p5-fZS"/>
-                        <outlet property="powerBtn" destination="Ofz-dr-y7J" id="kxZ-KR-ixY"/>
-                        <outlet property="welcomeLbl" destination="1wi-s5-JsM" id="u56-c7-JZy"/>
+                        <outlet property="darkBlueBG" destination="hZG-ML-oJ6" id="zbh-c0-zBe"/>
+                        <outlet property="mapHolderView" destination="6PD-Ge-QLi" id="eqR-Kf-sYB"/>
+                        <outlet property="powerBtn" destination="4Ue-sx-qXg" id="ocQ-zz-DNj"/>
+                        <outlet property="welcomeLbl" destination="AFZ-Fe-pLU" id="SNk-lH-mZL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="132" y="133.5832083958021"/>
+            <point key="canvasLocation" x="40.799999999999997" y="26.53673163418291"/>
         </scene>
     </scenes>
     <resources>
