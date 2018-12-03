@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  PictureGenerator
 //
-//  Created by Ahmad Hamed Rangeen on 11/29/18.
+//  Created by Ahmad Hamed Rangeen on 12/2/18.
 //  Copyright © 2018 Ahmad Hamed Rangeen. All rights reserved.
 //
 
