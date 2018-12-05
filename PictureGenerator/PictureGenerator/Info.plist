@@ -41,5 +41,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Picture Generator requires your location.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Picture Generator requires your location.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Picture Generator requires your location.</string>
 </dict>
 </plist>
