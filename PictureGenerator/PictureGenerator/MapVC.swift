@@ -1,26 +1,23 @@
 
 import UIKit
+import MapKit
 
 class MapVC: UIViewController {
 
-    @IBOutlet weak var darkBlueBG: UIImageView!
-    @IBOutlet weak var welcomeLbl: UILabel!
-    @IBOutlet weak var powerBtn: UIButton!
-    @IBOutlet weak var mapHolderView: UIView!
+    @IBOutlet weak var mapView: MKMapView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        mapView.delegate = self
+        
+    }
+    
+    @IBAction func centerMapButtonWasPressed(_ sender: Any) {
     }
     
     
-    @IBAction func powerBtnPressed(_ sender: UIButton) {
-        mapHolderView.isHidden = false
-        darkBlueBG.isHidden = true
-        powerBtn.isHidden = true
-        welcomeLbl.isHidden = true
-    }
-    
-
 }
 
+extension MapVC: MKMapViewDelegate {
+    
+}
