@@ -48,6 +48,10 @@ extension MapVC: MKMapViewDelegate {
     }
     
     @objc func dropPin(sender: UITapGestureRecognizer) {
+        
+        //removes previous pins everytime you double tap to drop a new pin
+        removePreviousPin()
+        
         // drop a pin on the mapview
         let touchPoint = sender.location(in: mapView)
        
@@ -64,8 +68,15 @@ extension MapVC: MKMapViewDelegate {
         //centering the Pin on the screen
         let coordinateRegion = MKCoordinateRegion(center: touchCoordinate, latitudinalMeters: regionRadius * 2.0, longitudinalMeters: regionRadius*2.0)
         mapView.setRegion(coordinateRegion, animated: true)
-         
-        
+    }
+    
+    
+    //function that removes the drop pin
+    // will call at the beginning of func dropPin
+    func removePreviousPin() {
+        for annotation in mapView.annotations {
+            mapView.removeAnnotation(annotation)
+        }
         
     }
     
