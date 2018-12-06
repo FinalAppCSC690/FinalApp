@@ -50,8 +50,22 @@ extension MapVC: MKMapViewDelegate {
     @objc func dropPin(sender: UITapGestureRecognizer) {
         // drop a pin on the mapview
         let touchPoint = sender.location(in: mapView)
-        // can use this later to get pictures
-        print(touchPoint)
+       
+         //converting touchPoint into a GPS coordinate
+        // can use this later to pass into API and get pictures from that location
+        let touchCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
+        
+        //creating annotation to drop on the map
+        let annotation = DroppingPin(coordinate: touchCoordinate, identifier: "droppingPin")
+        //adding it to the mapView
+        mapView.addAnnotation(annotation)
+        
+        
+        //centering the Pin on the screen
+        let coordinateRegion = MKCoordinateRegion(center: touchCoordinate, latitudinalMeters: regionRadius * 2.0, longitudinalMeters: regionRadius*2.0)
+        mapView.setRegion(coordinateRegion, animated: true)
+         
+        
         
     }
     
