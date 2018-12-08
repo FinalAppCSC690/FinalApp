@@ -6,14 +6,17 @@ import CoreLocation
 class MapVC: UIViewController, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
-    
     @IBOutlet weak var pictureView: UIView!
-    
     @IBOutlet weak var pictureViewHeightConstraint: NSLayoutConstraint!
     
     var locationManager = CLLocationManager()
     let authorizationStatus = CLLocationManager.authorizationStatus()
     let regionRadius: Double = 1000
+    
+ 
+    var spinner: UIActivityIndicatorView?
+    var progressLabel: UILabel?
+    var screenSize = UIScreen.main.bounds
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +61,19 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
+    func addSpinner() {
+        spinner = UIActivityIndicatorView()
+        // give center, style and color for spinner
+        spinner?.center = CGPoint(x: (screenSize.width / 2) - ((spinner?.frame.width)! / 2), y: 150)
+        spinner?.style = .whiteLarge
+        spinner?.color = #colorLiteral(red: 1, green: 0, blue: 0.2262285948, alpha: 1)
+        
+        // start the animation
+        spinner?.startAnimating()
+        pictureView.addSubview(spinner!)
+        
+    }
+    
     @IBAction func centerMapButtonWasPressed(_ sender: Any) {
         if authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse {
             centerMapOnUserLocation()
@@ -98,6 +114,8 @@ extension MapVC: MKMapViewDelegate {
         removePreviousPin()
         animateViewUp()
         addSwipe()
+        addSpinner()
+        
         
         // drop a pin on the mapview
         let touchPoint = sender.location(in: mapView)
