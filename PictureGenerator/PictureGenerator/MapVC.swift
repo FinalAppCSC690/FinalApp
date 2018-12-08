@@ -3,7 +3,7 @@ import MapKit
 import CoreLocation
 
 
-class MapVC: UIViewController {
+class MapVC: UIViewController, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
     
@@ -16,7 +16,16 @@ class MapVC: UIViewController {
         mapView.delegate = self
         locationManager.delegate = self
         confugureLocationServices()
+        addDoubleTap()
         
+    }
+    
+    
+    func addDoubleTap() {
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(dropPin(sender: )))
+        doubleTap.numberOfTapsRequired = 2
+        doubleTap.delegate = self
+        mapView.addGestureRecognizer(doubleTap)
     }
     
     @IBAction func centerMapButtonWasPressed(_ sender: Any) {
@@ -28,12 +37,63 @@ class MapVC: UIViewController {
     
 }
 
+// EXTENSIONS
+
 extension MapVC: MKMapViewDelegate {
+    
+    // changing the dropPin color
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        // leave user location alone (blue color)
+        if annotation is MKUserLocation {return nil}
+        
+        let pinAnnotation = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "droppingPin")
+        
+        // set color to red
+        pinAnnotation.pinTintColor = #colorLiteral(red: 1, green: 0, blue: 0.2262285948, alpha: 1)
+        //animate pin to drop on mapView
+        pinAnnotation.animatesDrop = true
+        return pinAnnotation
+    }
+   
     
     func centerMapOnUserLocation() {
         guard let coordinate = locationManager.location?.coordinate else{ return }
         let coordinateRegion = MKCoordinateRegion(center: coordinate, latitudinalMeters: regionRadius * 2.0, longitudinalMeters: regionRadius * 2.0)
         mapView.setRegion(coordinateRegion, animated: true)
+    }
+    
+    @objc func dropPin(sender: UITapGestureRecognizer) {
+        
+        //removes previous pins everytime you double tap to drop a new pin
+        removePreviousPin()
+        
+        // drop a pin on the mapview
+        let touchPoint = sender.location(in: mapView)
+       
+         //converting touchPoint into a GPS coordinate
+        // can use this later to pass into API and get pictures from that location
+        let touchCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
+        
+        //creating annotation to drop on the map
+        let annotation = DroppingPin(coordinate: touchCoordinate, identifier: "droppingPin")
+        //adding it to the mapView
+        mapView.addAnnotation(annotation)
+        
+        
+        //centering the Pin on the screen
+        let coordinateRegion = MKCoordinateRegion(center: touchCoordinate, latitudinalMeters: regionRadius * 2.0, longitudinalMeters: regionRadius*2.0)
+        mapView.setRegion(coordinateRegion, animated: true)
+    }
+    
+    
+    //function that removes the drop pin
+    // will call at the beginning of func dropPin
+    func removePreviousPin() {
+        for annotation in mapView.annotations {
+            mapView.removeAnnotation(annotation)
+        }
+        
     }
     
 }
