@@ -7,6 +7,10 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
     
+    @IBOutlet weak var pictureView: UIView!
+    
+    @IBOutlet weak var pictureViewHeightConstraint: NSLayoutConstraint!
+    
     var locationManager = CLLocationManager()
     let authorizationStatus = CLLocationManager.authorizationStatus()
     let regionRadius: Double = 1000
@@ -28,12 +32,19 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         mapView.addGestureRecognizer(doubleTap)
     }
     
+    func animateViewUp(){
+        // modifing constraint to make it move up a certain amount
+        pictureViewHeightConstraint.constant = 300
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
     @IBAction func centerMapButtonWasPressed(_ sender: Any) {
         if authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse {
             centerMapOnUserLocation()
         }
     }
-    
     
 }
 
@@ -67,6 +78,7 @@ extension MapVC: MKMapViewDelegate {
         
         //removes previous pins everytime you double tap to drop a new pin
         removePreviousPin()
+        animateViewUp()
         
         // drop a pin on the mapview
         let touchPoint = sender.location(in: mapView)
