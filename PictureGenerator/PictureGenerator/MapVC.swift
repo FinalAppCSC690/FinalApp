@@ -40,6 +40,24 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
+    // can swipe down on picture view to hide it again
+    func addSwipe(){
+        
+        // allows us to take note of swipe gesture on screen
+        let swipe = UISwipeGestureRecognizer(target: self, action: #selector(animateViewDown))
+        //set setting for swipe
+        swipe.direction = .down
+        // add gestureRecognizer to pictureView
+        pictureView.addGestureRecognizer(swipe)
+    }
+    
+    @objc func animateViewDown(){
+        pictureViewHeightConstraint.constant = 0
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
     @IBAction func centerMapButtonWasPressed(_ sender: Any) {
         if authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse {
             centerMapOnUserLocation()
@@ -79,6 +97,7 @@ extension MapVC: MKMapViewDelegate {
         //removes previous pins everytime you double tap to drop a new pin
         removePreviousPin()
         animateViewUp()
+        addSwipe()
         
         // drop a pin on the mapview
         let touchPoint = sender.location(in: mapView)
