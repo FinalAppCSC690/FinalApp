@@ -74,6 +74,30 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         
     }
     
+    func addProgessLabel() {
+        progressLabel = UILabel()
+        //x= center of screen , y = 25 points under spinner
+        progressLabel?.frame = CGRect(x: (screenSize.width/2) - 120, y: 175, width: 240, height: 40)
+        progressLabel?.font = UIFont(name: "Helvetica", size: 18)
+        progressLabel?.textColor = #colorLiteral(red: 1, green: 0, blue: 0.2262285948, alpha: 1)
+        progressLabel?.textAlignment = .center
+        progressLabel?.text = "20/40 Photos added"
+        pictureView.addSubview(progressLabel!)
+        
+    }
+    
+    func removeProgressLabel(){
+        if progressLabel != nil {
+            progressLabel?.removeFromSuperview()
+        }
+    }
+    
+    func removeSpinner(){
+        if spinner != nil {
+            spinner?.removeFromSuperview()
+        }
+    }
+    
     @IBAction func centerMapButtonWasPressed(_ sender: Any) {
         if authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse {
             centerMapOnUserLocation()
@@ -112,10 +136,12 @@ extension MapVC: MKMapViewDelegate {
         
         //removes previous pins everytime you double tap to drop a new pin
         removePreviousPin()
+        removeSpinner()
+        removeProgressLabel()
         animateViewUp()
         addSwipe()
         addSpinner()
-        
+        addProgessLabel()
         
         // drop a pin on the mapview
         let touchPoint = sender.location(in: mapView)
