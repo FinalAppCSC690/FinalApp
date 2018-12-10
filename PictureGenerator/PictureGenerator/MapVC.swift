@@ -13,10 +13,15 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     let authorizationStatus = CLLocationManager.authorizationStatus()
     let regionRadius: Double = 1000
     
- 
     var spinner: UIActivityIndicatorView?
     var progressLabel: UILabel?
     var screenSize = UIScreen.main.bounds
+    
+    // in order to create UICollection View, must have flowLayout
+    var flowLayout = UICollectionViewFlowLayout()
+    var collectionView: UICollectionView?
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +29,20 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         locationManager.delegate = self
         confugureLocationServices()
         addDoubleTap()
+    
+        
+        // frame : as big as the pictureView
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: flowLayout)
+        //register a cell for it to use
+        //will allow us to deque our cell later in collection view
+        collectionView?.register(PictureCell.self, forCellWithReuseIdentifier: "pictureCell")
+        // give it a delegate
+        collectionView?.delegate = self
+        collectionView?.dataSource = self
+        collectionView?.backgroundColor = #colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0, alpha: 1)
+        pictureView.addSubview(collectionView!)
+        
+        
         
     }
     
@@ -70,8 +89,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         
         // start the animation
         spinner?.startAnimating()
-        pictureView.addSubview(spinner!)
-        
+        collectionView?.addSubview(spinner!)
     }
     
     func addProgessLabel() {
@@ -81,8 +99,8 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         progressLabel?.font = UIFont(name: "Helvetica", size: 18)
         progressLabel?.textColor = #colorLiteral(red: 1, green: 0, blue: 0.2262285948, alpha: 1)
         progressLabel?.textAlignment = .center
-        progressLabel?.text = "20/40 Photos added"
-        pictureView.addSubview(progressLabel!)
+        progressLabel?.text = "Photos Loading..."
+        collectionView?.addSubview(progressLabel!)
         
     }
     
@@ -188,5 +206,21 @@ extension MapVC: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         centerMapOnUserLocation()
+    }
+}
+
+extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        
+        return 1
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        return 4
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pictureCell", for: indexPath) as? PictureCell
+        return cell!
     }
 }
