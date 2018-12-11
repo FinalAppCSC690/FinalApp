@@ -16,6 +16,7 @@
 		BA31051921B4A94C0087FA72 /* PictureGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA31051821B4A94C0087FA72 /* PictureGeneratorTests.swift */; };
 		BA31052421B4A94C0087FA72 /* PictureGeneratorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA31052321B4A94C0087FA72 /* PictureGeneratorUITests.swift */; };
 		BA329E7121B9867C0026196A /* DroppingPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA329E7021B9867C0026196A /* DroppingPin.swift */; };
+		BA61ADAA21C0810A00B45DCB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA61ADA921C0810A00B45DCB /* Constants.swift */; };
 		BAAF808F21BED2F60020E4AB /* PictureCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF808E21BED2F60020E4AB /* PictureCell.swift */; };
 		DAB222B85B504F69BAA62A43 /* Pods_PictureGeneratorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 142C89E75E9B40E7ACC6516E /* Pods_PictureGeneratorTests.framework */; };
 		EC78D581539AEAD1F474D110 /* Pods_PictureGenerator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDAE21B0FAED70E2316BAF27 /* Pods_PictureGenerator.framework */; };
@@ -57,6 +58,7 @@
 		BA31052321B4A94C0087FA72 /* PictureGeneratorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureGeneratorUITests.swift; sourceTree = "<group>"; };
 		BA31052521B4A94C0087FA72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BA329E7021B9867C0026196A /* DroppingPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroppingPin.swift; sourceTree = "<group>"; };
+		BA61ADA921C0810A00B45DCB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		BAAF808E21BED2F60020E4AB /* PictureCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureCell.swift; sourceTree = "<group>"; };
 		BDAE21B0FAED70E2316BAF27 /* Pods_PictureGenerator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PictureGenerator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF9D356EFC61D48414ADE15F /* Pods-PictureGenerator.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PictureGenerator.release.xcconfig"; path = "Pods/Target Support Files/Pods-PictureGenerator/Pods-PictureGenerator.release.xcconfig"; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				BA31050F21B4A94C0087FA72 /* Info.plist */,
 				BA329E7021B9867C0026196A /* DroppingPin.swift */,
 				BAAF808E21BED2F60020E4AB /* PictureCell.swift */,
+				BA61ADA921C0810A00B45DCB /* Constants.swift */,
 			);
 			path = PictureGenerator;
 			sourceTree = "<group>";
@@ -399,6 +402,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA61ADAA21C0810A00B45DCB /* Constants.swift in Sources */,
 				BA31050621B4A94B0087FA72 /* MapVC.swift in Sources */,
 				BAAF808F21BED2F60020E4AB /* PictureCell.swift in Sources */,
 				BA329E7121B9867C0026196A /* DroppingPin.swift in Sources */,
