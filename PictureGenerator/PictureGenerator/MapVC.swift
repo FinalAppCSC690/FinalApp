@@ -24,6 +24,9 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     
     // array that will hold URL images of type string
     var imageUrlArray = [String]()
+   // array that holds images
+    var imageArray = [UIImage]()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,6 +127,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
+    // using Alamofire to download list of URL's for all the photos
     func retrieveUrls(forAnnotation annotation : DroppingPin , handler : @escaping (_ status : Bool) -> ()) {
         
         //empty the array because if you add new pin, you want old info to be deleted
@@ -145,12 +149,34 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
             
             //notify that we are done using all url's
             handler(true)
-            
+        }
+    }
+    
+    // download images
+    func retrieveImages( handler: @escaping (_ status: Bool) -> ()) {
+        
+        // first clear out images if there are any
+        imageArray = []
+        
+        // cycle thru filled URL array and create an alamofire request
+        // to download each image from its URL
+        for url in imageUrlArray {
+            Alamofire.request(url).responseImage ( completionHandler: { (response) in
+                // deal with response and create
+                // constant that holds image value
+                guard let image = response.result.value else { return }
+                
+                // use images
+                self.imageArray.append(image)
+                
+                if self.imageArray.count == self.imageUrlArray.count {
+                    handler(true)
+                }
+            })
         }
         
-        
-        
     }
+    
 }
 
 // EXTENSIONS
@@ -207,9 +233,24 @@ extension MapVC: MKMapViewDelegate {
         let coordinateRegion = MKCoordinateRegion(center: touchCoordinate, latitudinalMeters: regionRadius * 2.0, longitudinalMeters: regionRadius*2.0)
         mapView.setRegion(coordinateRegion, animated: true)
         
-        retrieveUrls(forAnnotation: annotation) { (true) in
+        retrieveUrls(forAnnotation: annotation) { (finished) in
             
-            print(self.imageUrlArray)
+           // print(self.imageUrlArray)
+            
+            if finished {
+                self.retrieveImages(handler: { (finished) in
+                    if finished {
+                        // hide spinner
+                        self.removeSpinner()
+                        // hide label
+                        self.removeProgressLabel()
+                        
+                        // reload collectionView
+                    }
+                })
+            }
+            
+            
         }
     }
     
