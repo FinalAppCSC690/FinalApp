@@ -1,7 +1,8 @@
 import UIKit
 import MapKit
 import CoreLocation
-
+import Alamofire
+import AlamofireImage
 
 class MapVC: UIViewController, UIGestureRecognizerDelegate {
 
@@ -21,7 +22,8 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     var flowLayout = UICollectionViewFlowLayout()
     var collectionView: UICollectionView?
     
-    
+    // array that will hold URL images of type string
+    var imageUrlArray = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -122,6 +124,33 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
+    func retrieveUrls(forAnnotation annotation : DroppingPin , handler : @escaping (_ status : Bool) -> ()) {
+        
+        //empty the array because if you add new pin, you want old info to be deleted
+        imageUrlArray = []
+        
+        Alamofire.request(flickrUrl(forApiKey: apiKey, withAnnotation: annotation, andNumberOfPhotos: 30)).responseJSON { (response) in
+            guard let json = response.result.value as? Dictionary < String, AnyObject > else {return}
+            // get into photos dictionary
+            let photosDict = json["photos"] as! Dictionary < String, AnyObject >
+            
+            let photosDictArray = photosDict["photo"] as! [Dictionary < String , AnyObject>]
+            
+            for photo in photosDictArray {
+                // look at picture URL to see what it looks like
+                let postUrl = "https://farm\(photo["farm"]!).staticflickr.com/\(photo["server"]!)/\(photo["id"]!)_\(photo["secret"]!)_h_d.jpg"
+                
+                self.imageUrlArray.append(postUrl)
+            }
+            
+            //notify that we are done using all url's
+            handler(true)
+            
+        }
+        
+        
+        
+    }
 }
 
 // EXTENSIONS
@@ -177,6 +206,11 @@ extension MapVC: MKMapViewDelegate {
         //centering the Pin on the screen
         let coordinateRegion = MKCoordinateRegion(center: touchCoordinate, latitudinalMeters: regionRadius * 2.0, longitudinalMeters: regionRadius*2.0)
         mapView.setRegion(coordinateRegion, animated: true)
+        
+        retrieveUrls(forAnnotation: annotation) { (true) in
+            
+            print(self.imageUrlArray)
+        }
     }
     
     
