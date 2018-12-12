@@ -44,7 +44,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         // give it a delegate
         collectionView?.delegate = self
         collectionView?.dataSource = self
-        collectionView?.backgroundColor = #colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0, alpha: 1)
+        collectionView?.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0.2262285948, alpha: 1)
         pictureView.addSubview(collectionView!)
         
         
@@ -79,6 +79,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @objc func animateViewDown(){
+        cancelAlamofireSessions()
         pictureViewHeightConstraint.constant = 0
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
@@ -90,7 +91,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         // give center, style and color for spinner
         spinner?.center = CGPoint(x: (screenSize.width / 2) - ((spinner?.frame.width)! / 2), y: 150)
         spinner?.style = .whiteLarge
-        spinner?.color = #colorLiteral(red: 1, green: 0, blue: 0.2262285948, alpha: 1)
+        spinner?.color = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         
         // start the animation
         spinner?.startAnimating()
@@ -102,7 +103,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         //x= center of screen , y = 25 points under spinner
         progressLabel?.frame = CGRect(x: (screenSize.width/2) - 120, y: 175, width: 240, height: 40)
         progressLabel?.font = UIFont(name: "Helvetica", size: 18)
-        progressLabel?.textColor = #colorLiteral(red: 1, green: 0, blue: 0.2262285948, alpha: 1)
+        progressLabel?.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         progressLabel?.textAlignment = .center
         progressLabel?.text = "Photos Loading..."
         collectionView?.addSubview(progressLabel!)
@@ -177,6 +178,22 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         
     }
     
+    // canceling almofire sessions for when we
+    //scroll down on pictureView and when we drop new pins
+    func cancelAlamofireSessions() {
+        
+        // access singleton class from Alamofire
+        Alamofire.SessionManager.default.session.getTasksWithCompletionHandler { (sessionDataTask, uploadData, downloadData) in
+            for task in sessionDataTask {
+                task.cancel()
+            }
+            
+            // shorter way to do same thing as above
+            downloadData.forEach({ $0.cancel()})
+        }
+    }
+    
+    
 }
 
 // EXTENSIONS
@@ -211,6 +228,9 @@ extension MapVC: MKMapViewDelegate {
         removePreviousPin()
         removeSpinner()
         removeProgressLabel()
+        cancelAlamofireSessions()
+        
+        
         animateViewUp()
         addSwipe()
         addSpinner()
