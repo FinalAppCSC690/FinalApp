@@ -1,9 +1,10 @@
 import UIKit
 import MapKit
 import CoreLocation
+import Alamofire
+import AlamofireImage
 
-
-class MapVC: UIViewController, UIGestureRecognizerDelegate {
+class MapViewController: UIViewController, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var pictureView: UIView!
@@ -21,6 +22,10 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     var flowLayout = UICollectionViewFlowLayout()
     var collectionView: UICollectionView?
     
+    // array that will hold URL images of type string
+    var imageUrlArray = [String]()
+   // array that holds images
+    var imageArray = [UIImage]()
     
     
     override func viewDidLoad() {
@@ -39,7 +44,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         // give it a delegate
         collectionView?.delegate = self
         collectionView?.dataSource = self
-        collectionView?.backgroundColor = #colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0, alpha: 1)
+        collectionView?.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0.2262285948, alpha: 1)
         pictureView.addSubview(collectionView!)
         
         
@@ -56,7 +61,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     
     func animateViewUp(){
         // modifing constraint to make it move up a certain amount
-        pictureViewHeightConstraint.constant = 300
+        pictureViewHeightConstraint.constant = 400
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
@@ -74,6 +79,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @objc func animateViewDown(){
+        cancelAlamofireSessions()
         pictureViewHeightConstraint.constant = 0
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
@@ -85,7 +91,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         // give center, style and color for spinner
         spinner?.center = CGPoint(x: (screenSize.width / 2) - ((spinner?.frame.width)! / 2), y: 150)
         spinner?.style = .whiteLarge
-        spinner?.color = #colorLiteral(red: 1, green: 0, blue: 0.2262285948, alpha: 1)
+        spinner?.color = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         
         // start the animation
         spinner?.startAnimating()
@@ -97,7 +103,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         //x= center of screen , y = 25 points under spinner
         progressLabel?.frame = CGRect(x: (screenSize.width/2) - 120, y: 175, width: 240, height: 40)
         progressLabel?.font = UIFont(name: "Helvetica", size: 18)
-        progressLabel?.textColor = #colorLiteral(red: 1, green: 0, blue: 0.2262285948, alpha: 1)
+        progressLabel?.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         progressLabel?.textAlignment = .center
         progressLabel?.text = "Photos Loading..."
         collectionView?.addSubview(progressLabel!)
@@ -122,11 +128,71 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
+    // using Alamofire to download list of URL's for all the photos
+    func retrieveUrls(forAnnotation annotation : DroppingPin , handler : @escaping (_ status : Bool) -> ()) {
+        
+        Alamofire.request(flickrUrl(forApiKey: apiKey, withAnnotation: annotation, andNumberOfPhotos: 50)).responseJSON { (response) in
+            guard let json = response.result.value as? Dictionary < String, AnyObject > else {return}
+            // get into photos dictionary
+            let photosDict = json["photos"] as! Dictionary < String, AnyObject >
+            
+            let photosDictArray = photosDict["photo"] as! [Dictionary < String , AnyObject>]
+            
+            for photo in photosDictArray {
+                // look at picture URL to see what it looks like
+                let postUrl = "https://farm\(photo["farm"]!).staticflickr.com/\(photo["server"]!)/\(photo["id"]!)_\(photo["secret"]!)_h_d.jpg"
+                
+                self.imageUrlArray.append(postUrl)
+            }
+            
+            //notify that we are done using all url's
+            handler(true)
+        }
+    }
+    
+    // download images
+    func retrieveImages( handler: @escaping (_ status: Bool) -> ()) {
+        
+        // cycle thru filled URL array and create an alamofire request
+        // to download each image from its URL
+        for url in imageUrlArray {
+            Alamofire.request(url).responseImage ( completionHandler: { (response) in
+                // deal with response and create
+                // constant that holds image value
+                guard let image = response.result.value else { return }
+                
+                // use images
+                self.imageArray.append(image)
+                
+                if self.imageArray.count == self.imageUrlArray.count {
+                    handler(true)
+                }
+            })
+        }
+        
+    }
+    
+    // canceling almofire sessions for when we
+    //scroll down on pictureView and when we drop new pins
+    func cancelAlamofireSessions() {
+        
+        // access singleton class from Alamofire
+        Alamofire.SessionManager.default.session.getTasksWithCompletionHandler { (sessionDataTask, uploadData, downloadData) in
+            for task in sessionDataTask {
+                task.cancel()
+            }
+            
+            // shorter way to do same thing as above
+            downloadData.forEach({ $0.cancel()})
+        }
+    }
+    
+    
 }
 
 // EXTENSIONS
 
-extension MapVC: MKMapViewDelegate {
+extension MapViewController: MKMapViewDelegate {
     
     // changing the dropPin color
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -156,6 +222,14 @@ extension MapVC: MKMapViewDelegate {
         removePreviousPin()
         removeSpinner()
         removeProgressLabel()
+        cancelAlamofireSessions()
+        
+        //blank out arrays and reload data
+        imageUrlArray = []
+        imageArray = []
+        collectionView?.reloadData()
+        
+        
         animateViewUp()
         addSwipe()
         addSpinner()
@@ -177,6 +251,27 @@ extension MapVC: MKMapViewDelegate {
         //centering the Pin on the screen
         let coordinateRegion = MKCoordinateRegion(center: touchCoordinate, latitudinalMeters: regionRadius * 2.0, longitudinalMeters: regionRadius*2.0)
         mapView.setRegion(coordinateRegion, animated: true)
+        
+        retrieveUrls(forAnnotation: annotation) { (finished) in
+            
+           // print(self.imageUrlArray)
+            
+            if finished {
+                self.retrieveImages(handler: { (finished) in
+                    if finished {
+                        // hide spinner
+                        self.removeSpinner()
+                        // hide label
+                        self.removeProgressLabel()
+                        
+                        // reload collectionView
+                        self.collectionView?.reloadData()
+                    }
+                })
+            }
+            
+            
+        }
     }
     
     
@@ -191,7 +286,7 @@ extension MapVC: MKMapViewDelegate {
     
 }
 
-extension MapVC: CLLocationManagerDelegate {
+extension MapViewController: CLLocationManagerDelegate {
     
     // a way to check to see if we are authorized to use location
     func confugureLocationServices() {
@@ -209,18 +304,46 @@ extension MapVC: CLLocationManagerDelegate {
     }
 }
 
-extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
+extension MapViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         
         return 1
     }
+    
+    
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return 4
+        return imageArray.count
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pictureCell", for: indexPath) as? PictureCell
-        return cell!
+     
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pictureCell", for: indexPath) as? PictureCell
+                              else {return UICollectionViewCell()}  // returning empty cell so app dont crash
+        
+        // pull out an image from imageArray
+        let imageFromIndex = imageArray[indexPath.row]
+        // create imageView and add it as subview
+        let imageView = UIImageView(image: imageFromIndex)
+        cell.addSubview(imageView)
+        return cell
+        
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        //creating instance of PopVC
+        guard let popViewController = storyboard?.instantiateViewController(withIdentifier: "PopViewController") as? PopViewController else {return}
+        //pass it image from imageArray
+        popViewController.initData(forImage: imageArray[indexPath.row])
+        
+        //Presenting it
+        present(popViewController , animated: true , completion: nil)
+        
+    }
+    
+    
 }

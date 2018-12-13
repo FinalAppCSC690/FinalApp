@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--MapVC-->
+        <!--Map View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="MapVC" customModule="PictureGenerator" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="MapViewController" customModule="PictureGenerator" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -91,6 +91,55 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="40.799999999999997" y="26.53673163418291"/>
+        </scene>
+        <!--Pop View Controller-->
+        <scene sceneID="EVc-fG-qkL">
+            <objects>
+                <viewController storyboardIdentifier="PopViewController" id="kW3-0B-a2f" customClass="PopViewController" customModule="PictureGenerator" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="OdZ-yF-u3K">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BcV-jY-aSo">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2LN-Sr-MOP">
+                                <rect key="frame" x="62.5" y="617" width="250" height="30"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Double-tap to go back" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K6w-um-2GJ">
+                                        <rect key="frame" x="27.5" y="3.5" width="195" height="23.5"/>
+                                        <fontDescription key="fontDescription" name="Kefa-Regular" family="Kefa" pointSize="20"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.99705451730000005" green="0.062399346760000002" blue="0.26306312120000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="AWB-FC-OBn"/>
+                                    <constraint firstItem="K6w-um-2GJ" firstAttribute="centerY" secondItem="2LN-Sr-MOP" secondAttribute="centerY" id="a5W-Ai-RMj"/>
+                                    <constraint firstAttribute="width" constant="250" id="gng-fh-dQy"/>
+                                    <constraint firstItem="K6w-um-2GJ" firstAttribute="centerX" secondItem="2LN-Sr-MOP" secondAttribute="centerX" id="kgw-oc-xqo"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="RVd-BB-FPA" firstAttribute="bottom" secondItem="2LN-Sr-MOP" secondAttribute="bottom" constant="20" id="0CD-Jb-3BV"/>
+                            <constraint firstItem="2LN-Sr-MOP" firstAttribute="centerX" secondItem="OdZ-yF-u3K" secondAttribute="centerX" id="QLq-OL-zmJ"/>
+                            <constraint firstItem="BcV-jY-aSo" firstAttribute="top" secondItem="OdZ-yF-u3K" secondAttribute="top" id="m4A-XF-mMG"/>
+                            <constraint firstItem="BcV-jY-aSo" firstAttribute="leading" secondItem="RVd-BB-FPA" secondAttribute="leading" id="qmG-vN-Qhg"/>
+                            <constraint firstItem="BcV-jY-aSo" firstAttribute="bottom" secondItem="RVd-BB-FPA" secondAttribute="bottom" id="rTy-Ip-dws"/>
+                            <constraint firstItem="BcV-jY-aSo" firstAttribute="trailing" secondItem="RVd-BB-FPA" secondAttribute="trailing" id="wTI-nR-Hac"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="RVd-BB-FPA"/>
+                    </view>
+                    <connections>
+                        <outlet property="PopImageView" destination="BcV-jY-aSo" id="thb-pM-V1U"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bdP-cG-rto" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="754.39999999999998" y="26.53673163418291"/>
         </scene>
     </scenes>
     <resources>
