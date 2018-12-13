@@ -4,7 +4,7 @@ import CoreLocation
 import Alamofire
 import AlamofireImage
 
-class MapVC: UIViewController, UIGestureRecognizerDelegate {
+class MapViewController: UIViewController, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var pictureView: UIView!
@@ -61,7 +61,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     
     func animateViewUp(){
         // modifing constraint to make it move up a certain amount
-        pictureViewHeightConstraint.constant = 300
+        pictureViewHeightConstraint.constant = 400
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
@@ -131,7 +131,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     // using Alamofire to download list of URL's for all the photos
     func retrieveUrls(forAnnotation annotation : DroppingPin , handler : @escaping (_ status : Bool) -> ()) {
         
-        Alamofire.request(flickrUrl(forApiKey: apiKey, withAnnotation: annotation, andNumberOfPhotos: 30)).responseJSON { (response) in
+        Alamofire.request(flickrUrl(forApiKey: apiKey, withAnnotation: annotation, andNumberOfPhotos: 50)).responseJSON { (response) in
             guard let json = response.result.value as? Dictionary < String, AnyObject > else {return}
             // get into photos dictionary
             let photosDict = json["photos"] as! Dictionary < String, AnyObject >
@@ -192,7 +192,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
 
 // EXTENSIONS
 
-extension MapVC: MKMapViewDelegate {
+extension MapViewController: MKMapViewDelegate {
     
     // changing the dropPin color
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -286,7 +286,7 @@ extension MapVC: MKMapViewDelegate {
     
 }
 
-extension MapVC: CLLocationManagerDelegate {
+extension MapViewController: CLLocationManagerDelegate {
     
     // a way to check to see if we are authorized to use location
     func confugureLocationServices() {
@@ -304,7 +304,7 @@ extension MapVC: CLLocationManagerDelegate {
     }
 }
 
-extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
+extension MapViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         
@@ -330,6 +330,18 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
         let imageView = UIImageView(image: imageFromIndex)
         cell.addSubview(imageView)
         return cell
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        //creating instance of PopVC
+        guard let popViewController = storyboard?.instantiateViewController(withIdentifier: "PopViewController") as? PopViewController else {return}
+        //pass it image from imageArray
+        popViewController.initData(forImage: imageArray[indexPath.row])
+        
+        //Presenting it
+        present(popViewController , animated: true , completion: nil)
         
     }
     
